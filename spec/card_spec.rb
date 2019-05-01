@@ -18,4 +18,12 @@ describe Card do
             expect(card_QS.suit).to eq(:spades)
         end
     end
+
+    describe '#symbol' do
+        it 'returns the correct symbol based on the value and suit' do
+            expect(card_AC.symbol).to eq('AC')
+            expect(card_2H.symbol).to eq('2H')
+            expect(card_QS.symbol).to eq('QS')
+        end
+    end
 end
