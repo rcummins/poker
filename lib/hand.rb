@@ -38,12 +38,17 @@ class Hand
         end
     end
 
-    def beats?(other_hand)
+    def compare(other_hand)
         this_hand_rank = HAND_CLASSIFICATION_RANKS[self.classify_hand]
         other_hand_rank = HAND_CLASSIFICATION_RANKS[other_hand.classify_hand]
 
-        return true if this_hand_rank > other_hand_rank
-        return false if this_hand_rank < other_hand_rank
+        return :win if this_hand_rank > other_hand_rank
+        return :lose if this_hand_rank < other_hand_rank
+
+        # if classifications are the same, look at the card values
+        case this_hand_rank
+        when :straight_flush
+        end
     end
 
     private

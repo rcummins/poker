@@ -157,8 +157,8 @@ describe Hand do
         end
     end
 
-    describe '#beats?' do
-        it 'returns true when classification of other hand is lower rank' do
+    describe '#compare' do
+        it 'returns win when classification of other hand is lower rank' do
             hand.add_card(card_9C)
             hand.add_card(card_8C)
             hand.add_card(card_7C)
@@ -169,10 +169,10 @@ describe Hand do
             other_hand.add_card(card_10H)
             other_hand.add_card(card_10S)
             other_hand.add_card(card_4C)
-            expect(hand.beats?(other_hand)).to be true
+            expect(hand.compare(other_hand)).to eq(:win)
         end
 
-        it 'returns false when classification of other hand is higher rank' do
+        it 'returns lose when classification of other hand is higher rank' do
             hand.add_card(card_QC)
             hand.add_card(card_JC)
             hand.add_card(card_8C)
@@ -183,11 +183,11 @@ describe Hand do
             other_hand.add_card(card_10H)
             other_hand.add_card(card_7C)
             other_hand.add_card(card_7D)
-            expect(hand.beats?(other_hand)).to be false
+            expect(hand.compare(other_hand)).to eq(:lose)
         end
 
         context 'when classification of both hands is the same' do
-            xit 'returns true when straight flush high card is higher' do
+            xit 'returns win when straight flush high card is higher' do
                 hand.add_card(card_10D)
                 hand.add_card(card_9D)
                 hand.add_card(card_8D)
@@ -198,7 +198,7 @@ describe Hand do
                 other_hand.add_card(card_7C)
                 other_hand.add_card(card_6C)
                 other_hand.add_card(card_5C)
-                expect(hand.beats?(other_hand)).to be true
+                expect(hand.compare(other_hand)).to eq(:win)
             end
         end
     end
