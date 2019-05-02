@@ -12,43 +12,69 @@ class Hand
     end
 
     def classify_hand
-        card_values = group_values
-        card_suits = group_suits
+        card_value_counts = group_values
+        card_suit_counts = group_suits
+        card_value_diffs = calculate_card_value_diffs
 
-        if card_values.values.sort == [1, 4]
+        case
+        when card_suit_counts.values == [5] && card_value_diffs == [1,1,1,1]
+            :straight_flush
+        when card_value_counts.values.sort == [1, 4]
             :four_of_a_kind
-        elsif card_values.values.sort == [2, 3]
+        when card_value_counts.values.sort == [2, 3]
             :full_house
-        elsif card_suits.values == [5]
+        when card_suit_counts.values == [5]
             :flush
-        elsif card_values.values.sort == [1, 1, 3]
+        when card_value_diffs == [1, 1, 1, 1]
+            :straight
+        when card_value_counts.values.sort == [1, 1, 3]
             :three_of_a_kind
-        elsif card_values.values.sort == [1, 2, 2]
+        when card_value_counts.values.sort == [1, 2, 2]
             :two_pairs
-        elsif card_values.values.sort == [1, 1, 1, 2]
+        when card_value_counts.values.sort == [1, 1, 1, 2]
             :one_pair
+        else
+            :high_card
         end
     end
 
     private
 
     def group_values
-        card_values = Hash.new(0)
+        card_value_counts = Hash.new(0)
 
-        @cards.each do |card|
-            card_values[card.value] += 1
-        end
+        @cards.each { |card| card_value_counts[card.value] += 1 }
 
-        return card_values
+        return card_value_counts
     end
 
     def group_suits
-        card_suits = Hash.new(0)
+        card_suit_counts = Hash.new(0)
 
-        @cards.each do |card|
-            card_suits[card.suit] += 1
+        @cards.each { |card| card_suit_counts[card.suit] += 1 }
+
+        return card_suit_counts
+    end
+
+    def calculate_card_value_diffs
+        values_high_ace = @cards.map(&:value).sort
+
+        values_low_ace = values_high_ace.map do |original_value|
+            original_value == 14 ? 1 : original_value
+        end.sort
+
+        diffs_high_ace = []
+        diffs_low_ace = []
+
+        (0...4).each do |ind|
+            diffs_high_ace << values_high_ace[ind + 1] - values_high_ace[ind]
+            diffs_low_ace  << values_low_ace[ind + 1]  - values_low_ace[ind]
         end
 
-        return card_suits
+        if diffs_low_ace == [1, 1, 1, 1]
+            return diffs_low_ace
+        else
+            return diffs_high_ace
+        end
     end
 end

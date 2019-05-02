@@ -27,6 +27,9 @@ describe Hand do
     end
 
     describe '#classify_hand' do
+        let(:card_AS)  { double('card', :value => 14, :suit => :spades) }
+        let(:card_KC)  { double('card', :value => 13, :suit => :clubs) }
+        let(:card_QC)  { double('card', :value => 12, :suit => :clubs) }
         let(:card_JC)  { double('card', :value => 11, :suit => :clubs) }
         let(:card_10C) { double('card', :value => 10, :suit => :clubs) }
         let(:card_10D) { double('card', :value => 10, :suit => :diamonds) }
@@ -36,15 +39,18 @@ describe Hand do
         let(:card_8C)  { double('card', :value => 8,  :suit => :clubs) }
         let(:card_7C)  { double('card', :value => 7,  :suit => :clubs) }
         let(:card_7D)  { double('card', :value => 7,  :suit => :diamonds) }
+        let(:card_5C)  { double('card', :value => 5,  :suit => :clubs) }
         let(:card_4C)  { double('card', :value => 4,  :suit => :clubs) }
+        let(:card_3D)  { double('card', :value => 3,  :suit => :diamonds) }
+        let(:card_2H)  { double('card', :value => 2,  :suit => :hearts) }
 
-        xit 'recognizes a hand with a straight flush' do
+        it 'recognizes a hand with a straight flush' do
             hand.add_card(card_JC)
             hand.add_card(card_10C)
             hand.add_card(card_9C)
             hand.add_card(card_8C)
             hand.add_card(card_7C)
-            expect(hand.classif_hand).to eq(:straight_flush)
+            expect(hand.classify_hand).to eq(:straight_flush)
         end
 
         it 'recognizes a hand with four of a kind' do
@@ -74,7 +80,32 @@ describe Hand do
             expect(hand.classify_hand).to eq(:flush)
         end
 
-        it 'recognizes a hand with a straight'
+        it 'recognizes a hand with a straight without an ace' do
+            hand.add_card(card_JC)
+            hand.add_card(card_10D)
+            hand.add_card(card_9C)
+            hand.add_card(card_8C)
+            hand.add_card(card_7C)
+            expect(hand.classify_hand).to eq(:straight)
+        end
+
+        it 'recognizes a hand with a straight with a high ace' do
+            hand.add_card(card_AS)
+            hand.add_card(card_KC)
+            hand.add_card(card_QC)
+            hand.add_card(card_JC)
+            hand.add_card(card_10D)
+            expect(hand.classify_hand).to eq(:straight)
+        end
+
+        it 'recognizes a hand with a straight with a low ace' do
+            hand.add_card(card_5C)
+            hand.add_card(card_4C)
+            hand.add_card(card_3D)
+            hand.add_card(card_2H)
+            hand.add_card(card_AS)
+            expect(hand.classify_hand).to eq(:straight)
+        end
 
         it 'recognizes a hand with three of a kind' do
             hand.add_card(card_10C)
@@ -103,6 +134,13 @@ describe Hand do
             expect(hand.classify_hand).to eq(:one_pair)
         end
 
-        it 'recognizes a hand with nothing (high card)'
+        it 'recognizes a hand with nothing (high card)' do
+            hand.add_card(card_QC)
+            hand.add_card(card_10D)
+            hand.add_card(card_8C)
+            hand.add_card(card_4C)
+            hand.add_card(card_3D)
+            expect(hand.classify_hand).to eq(:high_card)
+        end
     end
 end
