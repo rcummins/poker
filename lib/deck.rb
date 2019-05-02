@@ -7,6 +7,14 @@ class Deck
         @cards = make_52_cards
     end
 
+    def shuffle
+        @cards.shuffle!
+    end
+
+    def deal_card
+        @cards.shift
+    end
+
     private
 
     SUITS = [:clubs, :diamonds, :hearts, :spades]
