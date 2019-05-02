@@ -26,15 +26,20 @@ describe Deck do
     end
 
     describe '#deal_card' do
+        let(:hand) { double("hand") }
+        let(:card) { deck.cards.first }
+        before(:each) { allow(hand).to receive(:add_card).with(card) }
+
         it 'removes the first card from the deck' do
             expect(deck.cards.first.symbol).to eq('AC')
-            deck.deal_card
+            deck.deal_card(hand)
             expect(deck.cards.first.symbol).to eq('AD')
             expect(deck.cards.length).to eq(51)
         end
 
-        it 'returns the first card from the deck' do
-            expect(deck.deal_card.symbol).to eq('AC')
+        it 'calls add_card on hand' do
+            expect(hand).to receive(:add_card).with(card)
+            deck.deal_card(hand)
         end
     end
 end

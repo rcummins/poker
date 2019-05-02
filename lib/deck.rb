@@ -11,8 +11,9 @@ class Deck
         @cards.shuffle!
     end
 
-    def deal_card
-        @cards.shift
+    def deal_card(hand)
+        card = @cards.shift
+        hand.add_card(card)
     end
 
     private
