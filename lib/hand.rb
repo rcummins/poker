@@ -38,7 +38,27 @@ class Hand
         end
     end
 
+    def beats?(other_hand)
+        this_hand_rank = HAND_CLASSIFICATION_RANKS[self.classify_hand]
+        other_hand_rank = HAND_CLASSIFICATION_RANKS[other_hand.classify_hand]
+
+        return true if this_hand_rank > other_hand_rank
+        return false if this_hand_rank < other_hand_rank
+    end
+
     private
+
+    HAND_CLASSIFICATION_RANKS = {
+        straight_flush: 9,
+        four_of_a_kind: 8,
+        full_house: 7,
+        flush: 6,
+        straight: 5,
+        three_of_a_kind: 4,
+        two_pairs: 3,
+        one_pair: 2,
+        high_card: 1
+    }
 
     def group_values
         card_value_counts = Hash.new(0)
