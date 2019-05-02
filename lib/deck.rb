@@ -23,7 +23,7 @@ class Deck
     def make_52_cards
         cards = []
 
-        (1..13).each do |value|
+        (2..14).each do |value|
             SUITS.each do |suit|
                 cards << Card.new(value, suit)
             end

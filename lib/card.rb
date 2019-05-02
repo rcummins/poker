@@ -13,7 +13,6 @@ class Card
     private
 
     VALUE_SYMBOLS = {
-        1 => 'A',
         2 => '2',
         3 => '3',
         4 => '4',
@@ -25,7 +24,8 @@ class Card
         10 => '10',
         11 => 'J',
         12 => 'Q',
-        13 => 'K'
+        13 => 'K',
+        14 => 'A'
     }
 
     SUIT_SYMBOLS = {

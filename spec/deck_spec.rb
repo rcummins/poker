@@ -31,9 +31,9 @@ describe Deck do
         before(:each) { allow(hand).to receive(:add_card).with(card) }
 
         it 'removes the first card from the deck' do
-            expect(deck.cards.first.symbol).to eq('AC')
+            expect(deck.cards.first.symbol).to eq('2C')
             deck.deal_card(hand)
-            expect(deck.cards.first.symbol).to eq('AD')
+            expect(deck.cards.first.symbol).to eq('2D')
             expect(deck.cards.length).to eq(51)
         end
 
