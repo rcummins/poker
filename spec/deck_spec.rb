@@ -13,11 +13,10 @@ describe Deck do
 
     describe '#shuffle' do
         it 'changes the order of the cards in the deck' do
-            expect(deck.cards.first.symbol).to eq('AC')
-            expect(deck.cards.last.symbol).to eq('KS')
+            cards_before_shuffling = deck.cards.dup
             deck.shuffle
-            expect(deck.cards.first.symbol).not_to eq('AC')
-            expect(deck.cards.last.symbol).not_to eq('KS')
+            expect(deck.cards).not_to eq(cards_before_shuffling)
+            expect(deck.cards).to match_array(cards_before_shuffling)
         end
 
         it 'does not change the number of cards in the deck' do
