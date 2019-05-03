@@ -17,7 +17,15 @@ class Game
     end
 
     def determine_round_winners
+        winners = @players
 
+        @players.each do |other_player|
+            winners.delete_if do |winner|
+                winner.hand.compare(other_player.hand) == :lose
+            end
+        end
+
+        return winners
     end
 
     private
