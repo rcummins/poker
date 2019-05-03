@@ -19,6 +19,12 @@ class Game
     end
 
     def deal_hands
+        @deck.shuffle
+        5.times do
+            @players.each do |player|
+                @deck.deal_card(player.hand)
+            end
+        end
     end
 
     def look_at_hands
