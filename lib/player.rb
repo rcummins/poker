@@ -16,7 +16,7 @@ class Player
     def ask_discard
         begin
             puts "Example: 'AC,2H' = discard ace of clubs and 2 of hearts"
-            puts "#{@name}, enter symbols of 1-3 cards to discard, or 'none': "
+            print "#{@name}, enter symbols of 1-3 cards to discard, or 'none': "
             user_entry = gets.chomp
             symbols = parse_cards_to_discard(user_entry)
 
@@ -31,6 +31,11 @@ class Player
             puts "Sorry, #{error.message}. Please try again."
             retry
         end
+    end
+
+    def take_from_pot(amount)
+        raise "you don't have enough money in your pot" if amount > @pot
+        @pot -= amount
     end
 
     def add_to_pot(amount)
