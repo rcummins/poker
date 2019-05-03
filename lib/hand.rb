@@ -5,8 +5,8 @@ class Hand
         @cards = []
     end
 
-    def print_hand
-        puts @cards.map(&:symbol).join(', ')
+    def format_for_printing
+        @cards.map(&:symbol).join(', ')
     end
 
     def add_card(card)

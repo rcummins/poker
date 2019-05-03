@@ -10,7 +10,7 @@ class Player
     end
 
     def print_hand
-        @hand.print_hand
+        puts "#{@name}'s hand: #{@hand.format_for_printing}"
     end
 
     def ask_discard
