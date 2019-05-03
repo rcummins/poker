@@ -2,13 +2,27 @@ require_relative 'deck'
 require_relative 'player'
 
 class Game
-    def initialize
+    def initialize(*test_players)
         @deck = Deck.new
-        @players = [Player.new('Renata'), Player.new('Jen')]
-        @turn_index = 0
+        @pot = 0
+        if test_players.empty?
+            @players = get_player_names.map { |name| Player.new(name) }
+        else
+            @players = test_players
+        end
     end
 
     def play
+        play_round
+    end
+
+    def determine_round_winners
+
+    end
+
+    private
+
+    def play_round
         deal_hands
         look_at_hands
         ask_bet
@@ -18,7 +32,18 @@ class Game
         allocate_pot
     end
 
-    private
+    def get_player_names
+        player_names = []
+        response = ''
+
+        until response == 'none'
+            print "Enter player name, or 'none' for no more players: "
+            response = gets.chomp
+            player_names << response unless response.downcase == 'none'
+        end
+
+        return player_names
+    end
 
     def deal_hands
         @deck.shuffle
@@ -60,6 +85,7 @@ class Game
     end
 
     def allocate_pot
+        winners = determine_round_winners
     end
 
     def eyes_closed_warning(name)
