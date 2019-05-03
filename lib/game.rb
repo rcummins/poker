@@ -28,6 +28,13 @@ class Game
     end
 
     def look_at_hands
+        @players.each do |player|
+            eyes_closed_warning(player.name)
+            player.print_hand
+            puts "#{player.name}, press enter when you're done."
+            gets
+        end
+        system('clear')
     end
 
     def ask_bet
@@ -39,9 +46,13 @@ class Game
             player.print_hand
             player.ask_discard
         end
+        system('clear')
     end
 
     def reveal_hands
+        @players.each do |player|
+            player.print_hand
+        end
     end
 
     def allocate_pot
@@ -50,6 +61,7 @@ class Game
     private
 
     def eyes_closed_warning(name)
+        system('clear')
         warning_string =  "#{name}'s turn to look at their hand. "
         warning_string += "Everyone else, close your eyes! "
         puts warning_string
