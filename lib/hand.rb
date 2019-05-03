@@ -5,6 +5,10 @@ class Hand
         @cards = []
     end
 
+    def print_hand
+        puts @cards.map(&:symbol).join(', ')
+    end
+
     def add_card(card)
         raise 'Maximum of 5 cards allowed per hand' if @cards.length == 5
         

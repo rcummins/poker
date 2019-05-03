@@ -9,6 +9,10 @@ class Player
         @hand = Hand.new
     end
 
+    def print_hand
+        @hand.print_hand
+    end
+
     def ask_discard
         begin
             puts "Example: 'AC,2H' = discard ace of clubs and 2 of hearts"
