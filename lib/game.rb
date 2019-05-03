@@ -80,20 +80,27 @@ class Game
 
     def ask_bet
         print_pot_balances
+        folded_players = []
+
         @active_players.each do |player|
             begin
                 print "#{player.name}, enter the amount to bet (or 'fold'): "
                 response = gets.chomp.downcase
-                next if response == 'fold'
 
-                amount = response.to_f
-                player.take_from_pot(amount)
-                @pot += amount
+                if response == 'fold'
+                    folded_players << player
+                else
+                    amount = response.to_f
+                    player.take_from_pot(amount)
+                    @pot += amount
+                end
             rescue => error
                 puts "Sorry, #{error.message}. Please try again or fold."
                 retry
             end
         end
+
+        @active_players.delete_if { |player| folded_players.include?(player) }
     end
 
     def ask_discard
