@@ -58,6 +58,8 @@ describe Hand do
     end
 
     describe '#discard' do
+        let(:err_msg) { '10C does not match any cards in your hand' }
+
         it 'discards the card with the matching symbol from the hand' do
             hand.add_card(symbol_9C)
             hand.add_card(symbol_8C)
@@ -67,6 +69,15 @@ describe Hand do
             hand.discard('8C')
             expect(hand.cards.length).to eq(4)
             expect(hand.cards.map(&:value)).to eq([9, 7, 6, 5])
+        end
+
+        it 'raises an error if the symbol does not match anything in hand' do
+            hand.add_card(symbol_9C)
+            hand.add_card(symbol_8C)
+            hand.add_card(symbol_7C)
+            hand.add_card(symbol_6C)
+            hand.add_card(symbol_5C)
+            expect { hand.discard('10C') }.to raise_error(err_msg)
         end
     end
 

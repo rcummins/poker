@@ -12,7 +12,11 @@ class Hand
     end
 
     def discard(symbol_to_discard)
-        @cards.delete_if { |card| card.symbol == symbol_to_discard }
+        previous_card_count = @cards.length
+        new_cards = @cards.delete_if { |card| card.symbol==symbol_to_discard }
+        if new_cards.length == previous_card_count
+            raise "#{symbol_to_discard} does not match any cards in your hand"
+        end
     end
 
     def classify_hand
