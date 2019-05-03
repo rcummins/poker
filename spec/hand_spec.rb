@@ -193,16 +193,16 @@ describe Hand do
 
     describe '#compare' do
         it 'returns :win when classification is higher rank than other hand' do
-            hand.add_card(card_9C)
-            hand.add_card(card_8C)
             hand.add_card(card_7C)
+            hand.add_card(card_7D)
+            hand.add_card(card_7H)
             hand.add_card(card_6C)
             hand.add_card(card_5C)
             other_hand.add_card(card_10C)
             other_hand.add_card(card_10D)
-            other_hand.add_card(card_10H)
-            other_hand.add_card(card_10S)
-            other_hand.add_card(card_4C)
+            other_hand.add_card(card_9C)
+            other_hand.add_card(card_8C)
+            other_hand.add_card(card_7S)
             expect(hand.compare(other_hand)).to eq(:win)
         end
 

@@ -21,6 +21,7 @@ class Game
 
         @players.each do |other_player|
             winners.delete_if do |winner|
+                winner != other_player &&
                 winner.hand.compare(other_player.hand) == :lose
             end
         end

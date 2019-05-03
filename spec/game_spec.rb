@@ -35,14 +35,14 @@ describe Game do
 
     describe '#determine_round_winners' do
         it 'returns the winning player' do
-            hand1.add_card(card_JC)
-            hand1.add_card(card_9C)
             hand1.add_card(card_8C)
+            hand1.add_card(card_8D)
+            hand1.add_card(card_8H)
             hand1.add_card(card_7C)
             hand1.add_card(card_3C)
-            hand2.add_card(card_10D)
+            hand2.add_card(card_9C)
             hand2.add_card(card_9D)
-            hand2.add_card(card_8D)
+            hand2.add_card(card_8S)
             hand2.add_card(card_7D)
             hand2.add_card(card_3D)
             expect(game_12.determine_round_winners).to eq([player1])
