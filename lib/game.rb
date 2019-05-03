@@ -10,16 +10,20 @@ class Game
         else
             @players = test_players
         end
+        @active_players = @players.dup
     end
 
     def play
-        play_round
+        until game_won?
+            play_round
+        end
+        puts "Congrats, #{@active_players.first.name}! You win the game!"
     end
 
     def determine_round_winners
-        winners = @players.dup
+        winners = @active_players.dup
 
-        @players.each do |other_player|
+        @active_players.each do |other_player|
             winners.delete_if do |winner|
                 winner != other_player &&
                 winner.hand.compare(other_player.hand) == :lose
@@ -39,6 +43,7 @@ class Game
         ask_bet
         reveal_hands
         allocate_pot
+        determine_eligible_players
     end
 
     def get_player_names
@@ -57,14 +62,14 @@ class Game
     def deal_hands
         @deck.shuffle
         5.times do
-            @players.each do |player|
+            @active_players.each do |player|
                 @deck.deal_card(player.hand)
             end
         end
     end
 
     def look_at_hands
-        @players.each do |player|
+        @active_players.each do |player|
             eyes_closed_warning(player.name)
             player.print_hand
             press_enter_when_done(player)
@@ -74,7 +79,7 @@ class Game
 
     def ask_bet
         print_pot_balances
-        @players.each do |player|
+        @active_players.each do |player|
             begin
                 print "#{player.name}, enter the amount to bet (or 'fold'): "
                 response = gets.chomp.downcase
@@ -91,7 +96,7 @@ class Game
     end
 
     def ask_discard
-        @players.each do |player|
+        @active_players.each do |player|
             eyes_closed_warning(player.name)
             player.print_hand
             number_of_cards_discarded = player.ask_discard
@@ -103,7 +108,7 @@ class Game
     end
 
     def reveal_hands
-        @players.each do |player|
+        @active_players.each do |player|
             player.print_hand
         end
     end
@@ -115,6 +120,16 @@ class Game
             winner.add_to_pot(@pot / winners.length)
         end
         print_pot_balances
+    end
+
+    def determine_eligible_players
+        @active_players = @players.dup
+        @active_players.delete_if { |player| player.pot == 0 }
+    end
+
+    def game_won?
+        determine_eligible_players
+        return @active_players.length == 1
     end
 
     def eyes_closed_warning(name)
@@ -141,7 +156,7 @@ class Game
     end
 
     def print_pot_balances
-        @players.each do |player|
+        @active_players.each do |player|
             puts "#{player.name}'s pot balance: $#{player.pot}"
         end
     end
