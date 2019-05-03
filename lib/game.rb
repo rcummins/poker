@@ -17,7 +17,7 @@ class Game
     end
 
     def determine_round_winners
-        winners = @players
+        winners = @players.dup
 
         @players.each do |other_player|
             winners.delete_if do |winner|
@@ -98,6 +98,7 @@ class Game
         winners.each do |winner|
             winner.add_to_pot(@pot / winners.length)
         end
+        print_pot_balances
     end
 
     def eyes_closed_warning(name)
@@ -120,6 +121,12 @@ class Game
         else
             name_string = winners.map { |winner| winner.name }.join(' and ')
             puts "#{name_string} tie for the win! They split the pot."
+        end
+    end
+
+    def print_pot_balances
+        @players.each do |player|
+            puts "#{player.name}'s pot balance: $#{player.pot}"
         end
     end
 end
