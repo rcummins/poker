@@ -3,6 +3,11 @@ require 'hand'
 describe Hand do
     subject(:hand) { Hand.new }
     let(:other_hand) { Hand.new }
+    let(:symbol_9C) { double('card', :value => 9, :symbol => '9C') }
+    let(:symbol_8C) { double('card', :value => 8, :symbol => '8C') }
+    let(:symbol_7C) { double('card', :value => 7, :symbol => '7C') }
+    let(:symbol_6C) { double('card', :value => 6, :symbol => '6C') }
+    let(:symbol_5C) { double('card', :value => 5, :symbol => '5C') }
     let(:card_AS)  { double('card', :value => 14, :suit => :spades) }
     let(:card_KC)  { double('card', :value => 13, :suit => :clubs) }
     let(:card_QC)  { double('card', :value => 12, :suit => :clubs) }
@@ -49,6 +54,19 @@ describe Hand do
         it 'raises an error if the hand already has 5 cards' do
             5.times { hand.add_card(card) }
             expect { hand.add_card(card) }.to raise_error(err_msg)
+        end
+    end
+
+    describe '#discard' do
+        it 'discards the card with the matching symbol from the hand' do
+            hand.add_card(symbol_9C)
+            hand.add_card(symbol_8C)
+            hand.add_card(symbol_7C)
+            hand.add_card(symbol_6C)
+            hand.add_card(symbol_5C)
+            hand.discard('8C')
+            expect(hand.cards.length).to eq(4)
+            expect(hand.cards.map(&:value)).to eq([9, 7, 6, 5])
         end
     end
 

@@ -11,6 +11,10 @@ class Hand
         @cards << card
     end
 
+    def discard(symbol_to_discard)
+        @cards.delete_if { |card| card.symbol == symbol_to_discard }
+    end
+
     def classify_hand
         card_value_counts = group_values
         card_suit_counts = group_suits
@@ -101,10 +105,6 @@ class Hand
 
     protected
 
-    def card_values
-        @cards.map(&:value)
-    end
-
     HAND_CLASSIFICATION_RANKS = {
         straight_flush: 9,
         four_of_a_kind: 8,
@@ -116,6 +116,10 @@ class Hand
         one_pair: 2,
         high_card: 1
     }
+
+    def card_values
+        @cards.map(&:value)
+    end
 
     def group_values
         card_value_counts = Hash.new(0)
