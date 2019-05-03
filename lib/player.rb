@@ -33,6 +33,10 @@ class Player
         end
     end
 
+    def add_to_pot(amount)
+        @pot += amount
+    end
+
     private
 
     def parse_cards_to_discard(user_entry)

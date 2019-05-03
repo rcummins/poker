@@ -94,6 +94,10 @@ class Game
 
     def allocate_pot
         winners = determine_round_winners
+        announce_round_winners(winners)
+        winners.each do |winner|
+            winner.add_to_pot(@pot / winners.length)
+        end
     end
 
     def eyes_closed_warning(name)
@@ -108,6 +112,15 @@ class Game
     def press_enter_when_done(player)
         puts "#{player.name}, press enter when you're done."
         gets
+    end
+
+    def announce_round_winners(winners)
+        if winners.length == 1
+            puts "#{winners.first.name} wins! They get the whole pot."
+        else
+            name_string = winners.map { |winner| winner.name }.join(' and ')
+            puts "#{name_string} tie for the win! They split the pot."
+        end
     end
 end
 
