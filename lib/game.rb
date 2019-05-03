@@ -80,27 +80,56 @@ class Game
 
     def ask_bet
         print_pot_balances
-        folded_players = []
+        players_fold = []
+        current_bet = 0
 
-        @active_players.each do |player|
-            begin
-                print "#{player.name}, enter the amount to bet (or 'fold'): "
-                response = gets.chomp.downcase
+        bet_amounts = {}
+        @active_players.each { |player| bet_amounts[player] = current_bet - 1 }
 
-                if response == 'fold'
-                    folded_players << player
-                else
-                    amount = response.to_f
-                    player.take_from_pot(amount)
-                    @pot += amount
+        until bet_amounts.values.all? { |amount| amount == current_bet }
+            @active_players.each do |player|
+                next if bet_amounts[player] == current_bet
+
+                begin
+                    puts "The current bet is $#{current_bet}."
+                    print "#{player.name}, enter 'fold', 'see' or 'raise': "
+                    response = gets.chomp.downcase
+
+                    if response == 'fold'
+                        players_fold << player
+                    elsif response == 'see'
+                        total_bet = current_bet
+                    elsif response == 'raise'
+                        print "#{player.name}, enter how much to raise to: $"
+                        total_bet = gets.chomp.to_f
+                    else
+                        raise "I didn't understand your response"
+                    end
+
+                    unless response == 'fold'
+                        previous_bet = bet_amounts[player]
+                        previous_bet = 0 if previous_bet == -1
+                        amount_to_add = total_bet - previous_bet
+
+                        player.take_from_pot(amount_to_add)
+                        @pot += amount_to_add
+
+                        bet_amounts[player] = total_bet
+                        current_bet = total_bet
+                    end
+                rescue => error
+                    puts "Sorry, #{error.message}. Please try again."
+                    retry
                 end
-            rescue => error
-                puts "Sorry, #{error.message}. Please try again or fold."
-                retry
             end
+
+            @active_players.delete_if { |player| players_fold.include?(player)}
+            bet_amounts.delete_if { |player, v| players_fold.include?(player) }
         end
 
-        @active_players.delete_if { |player| folded_players.include?(player) }
+        print_pot_balances
+        puts "Press enter when you're ready to continue"
+        gets
     end
 
     def ask_discard
