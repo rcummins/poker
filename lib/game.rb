@@ -44,6 +44,7 @@ class Game
         reveal_hands
         allocate_pot
         determine_eligible_players
+        reset_deck
     end
 
     def get_player_names
@@ -119,7 +120,12 @@ class Game
         winners.each do |winner|
             winner.add_to_pot(@pot / winners.length)
         end
+        @pot = 0
         print_pot_balances
+        unless game_won?
+            puts "Press enter when you're ready to play the next round"
+            gets
+        end
     end
 
     def determine_eligible_players
@@ -130,6 +136,13 @@ class Game
     def game_won?
         determine_eligible_players
         return @active_players.length == 1
+    end
+
+    def reset_deck
+        @deck = Deck.new
+        @active_players.each do |player|
+            player.discard_hand
+        end
     end
 
     def eyes_closed_warning(name)

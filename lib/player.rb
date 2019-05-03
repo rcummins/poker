@@ -33,6 +33,10 @@ class Player
         end
     end
 
+    def discard_hand
+        @hand = Hand.new
+    end
+
     def take_from_pot(amount)
         raise "you don't have enough money in your pot" if amount > @pot
         @pot -= amount
