@@ -18,6 +18,8 @@ class Game
         allocate_pot
     end
 
+    private
+
     def deal_hands
         @deck.shuffle
         5.times do
@@ -31,8 +33,7 @@ class Game
         @players.each do |player|
             eyes_closed_warning(player.name)
             player.print_hand
-            puts "#{player.name}, press enter when you're done."
-            gets
+            press_enter_when_done(player)
         end
         system('clear')
     end
@@ -44,7 +45,10 @@ class Game
         @players.each do |player|
             eyes_closed_warning(player.name)
             player.print_hand
-            player.ask_discard
+            number_of_cards_discarded = player.ask_discard
+            number_of_cards_discarded.times { @deck.deal_card(player.hand) }
+            player.print_hand
+            press_enter_when_done(player)
         end
         system('clear')
     end
@@ -58,14 +62,17 @@ class Game
     def allocate_pot
     end
 
-    private
-
     def eyes_closed_warning(name)
         system('clear')
         warning_string =  "#{name}'s turn to look at their hand. "
         warning_string += "Everyone else, close your eyes! "
         puts warning_string
         puts "#{name}, press enter when you're ready."
+        gets
+    end
+
+    def press_enter_when_done(player)
+        puts "#{player.name}, press enter when you're done."
         gets
     end
 end

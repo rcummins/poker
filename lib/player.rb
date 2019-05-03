@@ -25,6 +25,8 @@ class Player
             symbols.each do |symbol|
                 @hand.discard(symbol)
             end
+
+            return symbols.length
         rescue => error
             puts "Sorry, #{error.message}. Please try again."
             retry
