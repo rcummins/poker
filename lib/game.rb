@@ -29,6 +29,8 @@ class Game
 
     def ask_discard
         @players.each do |player|
+            eyes_closed_warning(player.name)
+            player.print_hand
             player.ask_discard
         end
     end
@@ -37,6 +39,16 @@ class Game
     end
 
     def allocate_pot
+    end
+
+    private
+
+    def eyes_closed_warning(name)
+        warning_string =  "#{name}'s turn to look at their hand. "
+        warning_string += "Everyone else, close your eyes! "
+        puts warning_string
+        puts "#{name}, press enter when you're ready."
+        gets
     end
 end
 
