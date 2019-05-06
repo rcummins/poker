@@ -39,9 +39,9 @@ class Game
         deal_hands
         look_at_hands
         ask_bet
-        ask_discard
-        ask_bet
-        reveal_hands
+        ask_discard if @active_players.length > 1
+        ask_bet if @active_players.length > 1
+        reveal_hands if @active_players.length > 1
         allocate_pot
         determine_eligible_players
         reset_deck
